@@ -68,16 +68,17 @@ class SQLCompiler(compiler.SQLCompiler):
         if with_limits:
             if self.query.high_mark is not None:
                 if self.query.low_mark is not None:
-                    result.append('LIMIT %d,%d' % self.query.low_mark, self.query.high_mark)
+                    start_mark = self.query.high_mark - self.query.low_mark
+                    result.append('LIMIT %d,%d' % (self.query.low_mark, start_mark))
                 else:
                     result.append('LIMIT %d' % self.query.high_mark)
             else:
                 val = self.connection.ops.no_limit_value()
                 if val:
                     if self.query.low_mark is not None:
-                        result.append('LIMIT %d,%d' % self.query.low_mark, self.query.high_mark)
+                        result.append('LIMIT %d,%d' % (self.query.low_mark, val))
                     else:
-                        result.append('LIMIT %d' % self.query.high_mark)
+                        result.append('LIMIT %d' % val)
 
         return ' '.join(result), tuple(params)
 
