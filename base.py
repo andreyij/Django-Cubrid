@@ -13,10 +13,10 @@ except ImportError, e:
 from django.db import utils
 from django.db.backends import *
 from django.db.backends.signals import connection_created
-from django.db.backends.mysql.client import DatabaseClient
-from django.db.backends.mysql.creation import DatabaseCreation
-from django.db.backends.mysql.introspection import DatabaseIntrospection
-from django.db.backends.mysql.validation import DatabaseValidation
+from django.db.backends.cubrid.client import DatabaseClient
+from django.db.backends.cubrid.creation import DatabaseCreation
+from django.db.backends.cubrid.introspection import DatabaseIntrospection
+from django.db.backends.cubrid.validation import DatabaseValidation
 from django.utils.safestring import SafeString, SafeUnicode
 
 DatabaseError = Database.DatabaseError
@@ -33,7 +33,8 @@ class CursorWrapper(object):
 
     def execute(self, query, args=None):
         # Simple return for test. Should enclose in try/except. See MySQL.
-        return self.cursor.execute(query, args)
+		print query
+		return self.cursor.execute(query, args)
 
     def executemany(self, query, args):
         # Simple return for test. Should enclose in try/except. See MySQL.
