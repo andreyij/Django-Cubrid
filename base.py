@@ -32,13 +32,22 @@ class CursorWrapper(object):
         self.cursor = cursor
 
     def execute(self, query, args=None):
-        # Simple return for test. Should enclose in try/except. See MySQL.
-		print query
-		return self.cursor.execute(query, args)
+        try:
+            query = query.replace ("%s","?")
+            return self.cursor.execute(query, args)
+        except Database.IntegrityError, e:
+            raise utils.IntegrityError, utils.IntegrityError(*tuple(e)), sys.exc_info()[2]
+        except Database.DatabaseError, e:
+            raise utils.DatabaseError, utils.DatabaseError(*tuple(e)), sys.exc_info()[2]
 
     def executemany(self, query, args):
-        # Simple return for test. Should enclose in try/except. See MySQL.
-        return self.cursor.executemany(query, args)
+        try:
+            query = query.replace ("%s","?")
+            return self.cursor.executemany(query, args)
+        except Database.IntegrityError, e:
+            raise utils.IntegrityError, utils.IntegrityError(*tuple(e)), sys.exc_info()[2]
+        except Database.DatabaseError, e:
+            raise utils.DatabaseError, utils.DatabaseError(*tuple(e)), sys.exc_info()[2]
 
     def __getattr__(self, attr):
         if attr in self.__dict__:
