@@ -144,6 +144,11 @@ class DatabaseWrapper(BaseDatabaseWrapper):
         return cursor
 
     def get_server_version(self):
-        # Should use server_version() method. CUBRIDdb has it implemented,
-        # but for some reason it's not working.
-        pass
+        if not self.server_version:
+            if not self._valid_connection():
+                self.cursor()
+            m = self.connection.server_version()
+            if not m:
+                raise Exception('Unable to determine CUBRID version')
+            self.server_version = m
+        return self.server_version
