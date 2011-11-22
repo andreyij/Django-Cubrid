@@ -7,7 +7,7 @@ class DatabaseCreation(BaseDatabaseCreation):
     # If a column type is set to None, it won't be included in the output.
     data_types = {
         'AutoField':         'integer AUTO_INCREMENT',
-        'BooleanField':      'bool',
+        'BooleanField':      'smallint',
         'CharField':         'varchar(%(max_length)s)',
         'CommaSeparatedIntegerField': 'varchar(%(max_length)s)',
         'DateField':         'date',
@@ -19,12 +19,13 @@ class DatabaseCreation(BaseDatabaseCreation):
         'IntegerField':      'integer',
         'BigIntegerField':   'bigint',
         'IPAddressField':    'char(15)',
-        'NullBooleanField':  'bool',
+        'NullBooleanField':  'smallint',
         'OneToOneField':     'integer',
-        'PositiveIntegerField': 'integer UNSIGNED',
-        'PositiveSmallIntegerField': 'smallint UNSIGNED',
+        'PositiveIntegerField': 'integer',
+        'PositiveSmallIntegerField': 'smallint',
         'SlugField':         'varchar(%(max_length)s)',
         'SmallIntegerField': 'smallint',
-        'TextField':         'longtext',
+        'TextField':         'string',
         'TimeField':         'time',
-    }
+   }
+
