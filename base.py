@@ -72,8 +72,8 @@ class DatabaseOperations(BaseDatabaseOperations):
         return "`%s`" % name
 
     def no_limit_value(self):
-        # 2**64 - 1, as recommended by the MySQL documentation
-        return 18446744073709551615L
+        # 2**63 - 1
+        return 9223372036854775807
 
     # TODO: Implement methods covering CUBRID-specific characteristics.
     # Start with methods returning NotImplementedError().
