@@ -75,6 +75,11 @@ class DatabaseOperations(BaseDatabaseOperations):
         # 2**63 - 1
         return 9223372036854775807
 
+    def last_insert_id(self, cursor, table_name, pk_name):
+        cursor.execute("SELECT LAST_INSERT_ID()")
+        result = cursor.fetchone()
+        return result[0]
+
     # TODO: Implement methods covering CUBRID-specific characteristics.
     # Start with methods returning NotImplementedError().
 
