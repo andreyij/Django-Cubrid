@@ -34,6 +34,13 @@ class CursorWrapper(object):
     def execute(self, query, args=None):
         try:
             query = query.replace ("%s","?")
+            args = list(args)
+            for i, j in enumerate(args):
+                if j is True:
+                    args[i] = 1
+                if j is False:
+                    args[i] = 0
+            args = tuple(args)
             return self.cursor.execute(query, args)
         except Database.IntegrityError, e:
             raise utils.IntegrityError, utils.IntegrityError(*tuple(e)), sys.exc_info()[2]
