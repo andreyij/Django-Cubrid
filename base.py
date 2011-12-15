@@ -45,6 +45,7 @@ class CursorWrapper(object):
     def executemany(self, query, args):
         try:
             query = query.replace ("%s","?")
+            args = CubridConvert().boolean_field(args)
             return self.cursor.executemany(query, args)
         except Database.IntegrityError, e:
             raise utils.IntegrityError, utils.IntegrityError(*tuple(e)), sys.exc_info()[2]
