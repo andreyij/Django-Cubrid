@@ -18,6 +18,7 @@ from django.db.backends.cubrid.creation import DatabaseCreation
 from django.db.backends.cubrid.introspection import DatabaseIntrospection
 from django.db.backends.cubrid.validation import DatabaseValidation
 from django.utils.safestring import SafeString, SafeUnicode
+from django.db.backends.cubrid.convert import CubridConvert
 
 DatabaseError = Database.DatabaseError
 IntegrityError = Database.IntegrityError
@@ -34,13 +35,7 @@ class CursorWrapper(object):
     def execute(self, query, args=None):
         try:
             query = query.replace ("%s","?")
-            args = list(args)
-            for i, j in enumerate(args):
-                if j is True:
-                    args[i] = 1
-                if j is False:
-                    args[i] = 0
-            args = tuple(args)
+            args = CubridConvert().boolean_field(args)
             return self.cursor.execute(query, args)
         except Database.IntegrityError, e:
             raise utils.IntegrityError, utils.IntegrityError(*tuple(e)), sys.exc_info()[2]
