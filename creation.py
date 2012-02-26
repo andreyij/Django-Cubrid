@@ -116,11 +116,11 @@ class DatabaseCreation(BaseDatabaseCreation):
 
         # Create the test database and start the cubrid server.
         try:
-            p = subprocess.Popen(["cubrid", "createdb", "%s" % test_database_name])
-            ret = os.waitpid(p.pid, 0)[1]
-            p = subprocess.Popen(["cubrid", "server", "start", "%s" % test_database_name])
-            ret = os.waitpid(p.pid, 0)[1]
-
+            subprocess.call(["cubrid", 'createdb' , '--db-volume-size=20M', '--log-volume-size=20M', "%s" % test_database_name])
+            print 'Created'
+            subprocess.call(["cubrid", "server", "start", "%s" % test_database_name])
+            print 'Started'
+			
         except Exception, e:
             sys.stderr.write("Got an error creating the test database: %s\n" % e)
             if not autoclobber:
@@ -129,16 +129,12 @@ class DatabaseCreation(BaseDatabaseCreation):
                 try:
                     if verbosity >= 1:
                         print "Destroying old test database..."
-                        p = subprocess.Popen(["cubrid", "server", "stop", "%s" % test_database_name])
-                        ret = os.waitpid(p.pid, 0)[1]
-                        p = subprocess.Popen(["cubrid", "deletedb", "%s" % test_database_name])
-                        ret = os.waitpid(p.pid, 0)[1]
+                        subprocess.call(["cubrid", "server", "stop", "%s" % test_database_name])
+                        subprocess.call(["cubrid", "deletedb", "%s" % test_database_name])
                     if verbosity >= 1:
                         print "Creating test database..."
-                        p = subprocess.Popen(["cubrid", "createdb", "%s" % test_database_name])
-                        ret = os.waitpid(p.pid, 0)[1]
-                        p = subprocess.Popen(["cubrid", "server", "start", "%s" % test_database_name])
-                        ret = os.waitpid(p.pid, 0)[1]
+                        subprocess.call(["cubrid", 'createdb' , '--db-volume-size=20M', '--log-volume-size=20M', "%s" % test_database_name])
+                        subprocess.call(["cubrid", "server", "start", "%s" % test_database_name])
                 except Exception, e:
                     sys.stderr.write("Got an error recreating the test database: %s\n" % e)
                     sys.exit(2)

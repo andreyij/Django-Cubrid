@@ -35,6 +35,7 @@ class CursorWrapper(object):
     def execute(self, query, args=None):
         try:
             query = query.replace ("%s","?")
+            print args
             args = CubridConvert().boolean_field(args)
             return self.cursor.execute(query, args)
         except Database.IntegrityError, e:
@@ -196,7 +197,7 @@ class DatabaseWrapper(BaseDatabaseWrapper):
         super(DatabaseWrapper, self).__init__(*args, **kwargs)
 
         self.server_version = None
-        self.features = DatabaseFeatures()
+        self.features = DatabaseFeatures(self)
         self.ops = DatabaseOperations()
         self.client = DatabaseClient(self)
         self.creation = DatabaseCreation(self)
